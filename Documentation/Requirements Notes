@@ -1,0 +1,141 @@
+Requirement Understanding
+
+I reviewed the FRD document and understood the business requirements.
+
+The available data contains information related to:
+Customers | Policies | Claims | Agents | Transactions | Locations
+
+The management team wants to analyze premium collections, claims performance, customer distribution, agent performance and product performance.
+
+=================================================================================================================
+
+Task 1: Business Understanding
+
+After reviewing the FRD, I identified the main business entities.
+
+Customer | Policy | Claim | Agent | Transaction | Location
+
+These entities are required to support all reporting and analytical requirements mentioned in the FRD.
+
+====================================================================================
+
+Task 2: Relationship Analysis
+
+After identifying the entities, I analyzed the relationships between them based on the business rules.
+
+1. One customer can have multiple policies.
+2. One policy belongs to one customer.
+3. One policy can generate multiple claims.
+4. One agent can manage multiple policies.
+5. One location can have multiple customers.
+6. One transaction belongs to one policy.
+
+These relationships were used while designing the dimensional model.
+
+===========================================================================================
+
+Task 3: Data Modelling Approach
+
+Based on the business requirements, I implemented a dimensional data model.
+
+Dimension Tables:
+
+DIM_CUSTOMER | DIM_AGENT | DIM_POLICY | DIM_LOCATION | DIM_DATE 
+
+Fact Tables :
+
+FACT_PREMIUM | FACT_CLAIMS
+
+This model supports reporting, analytics and dashboard development.
+
+=========================================================================
+
+Task 4: Source Data Preparation
+
+The source data was provided in Excel format.
+
+The Excel file was converted into Parquet format and uploaded into AWS S3.
+
+Data Flow : Excel → Parquet → AWS S3 → Snowflake
+
+===========================================================================================
+
+Task 5: Snowflake Data Warehouse Design
+
+The Snowflake environment was created using:
+
+Database, Schema, Warehouse, Storage Integration, File Format, External Stage, Raw Table, Dimension Tables, Fact Tables, Analysis Queries
+
+--- Separate SQL files were created for better maintainability.
+
+STAR SCHEMA DESIGN :
+
+fact premiums:
+
+            		DIM_CUSTOMER
+                       		|
+                       		|
+    DIM_AGENT  ---- FACT_PREMIUM ---- DIM_POLICY
+                       		|
+                      		 |
+               		 DIM_LOCATION
+                       		|
+                       		|
+                  	     DIM_DATE
+
+fact claims:
+
+
+                  DIM_CUSTOMER
+                       	|
+                      	 |
+DIM_AGENT ---- FACT_CLAIMS ---- DIM_POLICY
+                       	|
+                       	|
+               	 DIM_LOCATION
+                       	|
+                       	|
+                 	 DIM_DATE
+
+
+======================================================================================
+
+Task 6: Data Integrity Implementation
+
+Data integrity rules were implemented while creating dimension and fact tables.
+
+Implemented Constraints
+
+Primary Keys
+
+Foreign Keys
+
+NOT NULL Constraints
+
+===========================================================================================
+
+Task 7: Analytical Model Implementation
+
+The following analytical models were implemented.
+
+Premium Analysis
+
+Customer Analysis
+
+Claims Analysis
+
+Operational Analysis
+
+Product Analysis
+
+-->>>> The analysis was implemented using SQL queries based on the reporting requirements defined in the FRD.
+
+===========================================================================================
+
+Task 8: Snowpipe Automation
+
+Snowpipe implementation is currently pending.
+
+After validating the analytical model and reporting layer, Snowpipe will be implemented to automate future file ingestion from AWS S3 into Snowflake.
+
+Planned Data Flow : Parquet → AWS S3 → Snowpipe → Snowflake
